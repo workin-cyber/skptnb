@@ -61,7 +61,7 @@ async function get_order(orderNumber) {
         })
 
     } catch (error) {
-        debugger
+        
     }
 }
 
@@ -148,7 +148,13 @@ async function get_cookies() {
         .forEach(orderNumber => {
             Promises.push(get_order(orderNumber))
         })
-    const results = await Promise.all(Promises)
-    debugger
+        try {
+            console.log('start')
+            const results = await Promise.all(Promises)
+        } catch (error) {
+            console.log('error',error)
+            
+        }
+    
 
 })();
