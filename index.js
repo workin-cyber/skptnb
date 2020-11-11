@@ -114,7 +114,6 @@ async function get_address(addr) {
     }
 }
 
-
 async function get_cookies() {
         let driver = await new Builder().forBrowser('phantomjs').build();
     try {
