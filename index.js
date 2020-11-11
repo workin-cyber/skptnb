@@ -116,7 +116,7 @@ async function get_address(addr) {
 
 
 async function get_cookies() {
-        let driver = await new Builder().forBrowser('chrome').build();
+        let driver = await new Builder().forBrowser('phantomjs').build();
     try {
         await driver.get('https://www.10bis.co.il/reshome/Account/LogOn?ReturnUrl=%2freshome%2f&isMobileDevice=true');
         await driver.findElement(By.id('UserName')).sendKeys('tp9z5pq', Key.RETURN);
