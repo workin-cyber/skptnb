@@ -1,6 +1,7 @@
 const { Builder, By, Key } = require('selenium-webdriver');
 const axios = require('axios');
 const cheerio = require('cheerio')
+const FormData = require('form-data')
 const orders_placed = []
 const temp_orders = []
 
@@ -17,7 +18,6 @@ async function get_order(orderNumber) {
     try {
         const response = await axios.get('https://www.10bis.co.il/reshome/Orders/Standard?id=' + orderNumber, { headers: header })
         let r = response.data
-        console.log(r)
 
          if (r.DeliveryMethod == 'Pickup') throw 'פיקאפ'
 
@@ -45,16 +45,15 @@ async function get_order(orderNumber) {
             sum: r.Payment.TotalPriceToCharge,
             deliveryPrice: r.Payment.DeliveryPrice,
             timeline: {
-                new: r.SubmitTime
+                new: r.SubmitTime.split(/(\d+)/)[1]
             }
         }
         console.log(new_order)
 
         await axios.post('https://www.skip-il.com/yg', {
             data: {
-                order: new_order,
+                ...new_order,
                 storeId: '7254',
-                source: 'tenbis',
                 at: 'JMm8LXW9mgpGL3EF'
             },
             q: 'order:newDelivery'
@@ -68,9 +67,7 @@ async function get_order(orderNumber) {
 const UserName = 'tp9z5pq'
 const Password = 'sn8x5p4'
 async function login() {
-    const
-        FormData = require('form-data'),
-        data = new FormData()
+    const data = new FormData()
 
     data.append('UserName', UserName)
     data.append('Password', Password)
@@ -115,7 +112,7 @@ async function get_address(addr) {
 }
 
 async function get_cookies() {
-        let driver = await new Builder().forBrowser('phantomjs').build();
+        let driver = await new Builder().forBrowser('chrome').build();
     try {
         await driver.get('https://www.10bis.co.il/reshome/Account/LogOn?ReturnUrl=%2freshome%2f&isMobileDevice=true');
         await driver.findElement(By.id('UserName')).sendKeys('tp9z5pq', Key.RETURN);
