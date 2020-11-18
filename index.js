@@ -114,7 +114,7 @@ async function get_address(addr) {
 
 async function get_cookies() {
         let driver = await new Builder().forBrowser('chrome')
-        .setChromeOptions(new chrome.Options().addArguments(['--headless', '--disable-gpu', '--no-sandbox', '--disable-extensions', '--disable-dev-shm-usage']))
+        .setChromeOptions(new chrome.Options().addArguments(['--headless', '--disable-gpu', '--no-sandbox', '--disable-extensions', '--disable-dev-shm-usage','--remote-debugging-port=9222']))
         .build();
     try {
         await driver.get('https://www.10bis.co.il/reshome/Account/LogOn?ReturnUrl=%2freshome%2f&isMobileDevice=true');
