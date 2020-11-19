@@ -20,7 +20,7 @@ async function get_order(orderNumber) {
         const response = await axios.get('https://www.10bis.co.il/reshome/Orders/Standard?id=' + orderNumber, { headers: header })
         let r = response.data
 
-         if (r.DeliveryMethod == 'Pickup') throw 'פיקאפ'
+        if (r.DeliveryMethod == 'Pickup') throw 'פיקאפ'
 
         let addr = await get_address(r.DeliveryAddress.AddressLine)
 
@@ -61,12 +61,13 @@ async function get_order(orderNumber) {
         })
 
     } catch (error) {
-        
+
     }
 }
 
 const UserName = 'tp9z5pq'
 const Password = 'sn8x5p4'
+
 async function login() {
     const data = new FormData()
 
@@ -113,8 +114,8 @@ async function get_address(addr) {
 }
 
 async function get_cookies() {
-        let driver = await new Builder().forBrowser('chrome')
-        .setChromeOptions(new chrome.Options().addArguments(['--headless', '--disable-gpu', '--no-sandbox', '--disable-extensions', '--disable-dev-shm-usage','--remote-debugging-port=9222']))
+    let driver = await new Builder().forBrowser('chrome')
+        .setChromeOptions(new chrome.Options().addArguments(['--headless', '--disable-gpu', '--no-sandbox', '--disable-extensions', '--disable-dev-shm-usage', '--remote-debugging-port=9222']))
         .build();
     try {
         await driver.get('https://www.10bis.co.il/reshome/Account/LogOn?ReturnUrl=%2freshome%2f&isMobileDevice=true');
@@ -134,8 +135,17 @@ async function get_cookies() {
 }
 
 
-(async function start() {
-    if (!header.cookie) {
+async function start() {
+    const
+        date = new Date(),
+        GMT = Number(new Date(date).toLocaleTimeString('he', { timeZoneName: 'short', timeZone: 'Asia/Jerusalem' }).slice(-1)),
+        offset = new Date(date).getTimezoneOffset() / 60 + GMT,
+        hours = date.getHours() + offset
+        
+        console.log(hours)
+    if (hours > 2 && hours < 10)
+        return
+   /*  if (!header.cookie) {
         cookie = await get_cookies()
         header.cookie = cookie
     }
@@ -148,13 +158,17 @@ async function get_cookies() {
         .forEach(orderNumber => {
             Promises.push(get_order(orderNumber))
         })
-        try {
-            console.log('start')
-            const results = await Promise.all(Promises)
-        } catch (error) {
-            console.log('error',error)
-            
-        }
-    
+    try {
+        console.log('start')
+        const results = await Promise.all(Promises)
+    } catch (error) {
+        console.log('error', error)
 
-})();
+    } */
+
+}
+
+let interval
+clearInterval(interval)
+start()
+interval = setInterval(start, 1000 * 60)
