@@ -138,31 +138,30 @@ async function get_cookies() {
 async function start() {
     const
         date = new Date(),
-      beforeGMT = new Date(date).toLocaleTimeString('he', { hour12: false, timeZoneName: 'short', timeZone: 'Asia/Jerusalem' }).split(':')[0]
+        hour = new Date(date).toLocaleTimeString('he', { hour12: false, timeZoneName: 'short', timeZone: 'Asia/Jerusalem' }).split(':')[0]
 
-    console.log(beforeGMT)
-    if (hours > 2 && hours < 10)
+    console.log(hour)
+    if (hour > 2 && hour < 10)
         return
-    /*  if (!header.cookie) {
-         cookie = await get_cookies()
-         header.cookie = cookie
-     }
- 
-     await login()
- 
-     const Promises = []
-     temp_orders
-         .filter(orderNumber => !orders_placed.includes(orderNumber))
-         .forEach(orderNumber => {
-             Promises.push(get_order(orderNumber))
-         })
-     try {
-         console.log('start')
-         const results = await Promise.all(Promises)
-     } catch (error) {
-         console.log('error', error)
- 
-     } */
+    if (!header.cookie) {
+        cookie = await get_cookies()
+        header.cookie = cookie
+    }
+
+    await login()
+
+    const Promises = []
+    temp_orders
+        .filter(orderNumber => !orders_placed.includes(orderNumber))
+        .forEach(orderNumber => {
+            Promises.push(get_order(orderNumber))
+        })
+    try {
+        console.log('start')
+        const results = await Promise.all(Promises)
+    } catch (error) {
+        console.log('error', error)
+    }
 
 }
 
